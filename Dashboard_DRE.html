@@ -1,0 +1,857 @@
+<!--
+  ANDRADE MAIA ADVOGADOS — Dashboard Financeiro 2025 vs 2024
+  Zero dependências externas · Compatível SharePoint Online
+  Para incorporar: Embed web part → <iframe src="URL" width="100%" height="100vh" frameborder="0">
+-->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>AM Advogados · Dashboard 2025</title>
+<style>
+:root{
+  --k:#000;--ks:#1A1A1A;--kd:#111;--gd:#3A3A3A;--gm:#5A5A5A;--gl:#9B9B9B;
+  --or:#FF4114;--ord:#CC3310;--or2:#FF8866;
+  --wh:#FFF;--of:#EFEFEF;
+  --gr:#22C55E;--re:#EF4444;--bl:#1E6FDE;--ye:#F59E0B;--pu:#8B5CF6;
+  --fh:'Montserrat',Arial,sans-serif;--fb:'Poppins',Arial,sans-serif;
+  --hh:48px; --th:38px; --ch:calc(100vh - var(--hh) - var(--th) - 4px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:var(--k);color:var(--wh);font-family:var(--fb);font-size:12px}
+/* ── HEADER ── */
+.hdr{height:var(--hh);background:var(--ks);border-bottom:2px solid var(--or);display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0;gap:12px}
+.hdr-l{display:flex;align-items:center;gap:12px}
+.logo{width:32px;height:32px;border:2px solid var(--or);border-radius:3px;display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-weight:700;font-size:12px;color:var(--or)}
+.hdr h1{font-family:var(--fh);font-size:13px;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
+.hdr p{font-size:9px;color:var(--gl);margin-top:1px}
+.hdr-r{display:flex;align-items:center;gap:10px}
+.hbadge{background:var(--kd);border:1px solid var(--gd);border-radius:3px;padding:4px 10px;font-size:9px;color:var(--gl);font-family:var(--fh);text-align:center;white-space:nowrap}
+.hbadge b{display:block;color:var(--or);font-size:11px;margin-top:1px}
+/* ── TOGGLE 2024/2025 ── */
+.toggle-wrap{display:flex;align-items:center;gap:8px;background:var(--kd);border:1px solid var(--gd);border-radius:20px;padding:4px 8px}
+.toggle-lbl{font-size:9px;font-family:var(--fh);color:var(--gl);white-space:nowrap}
+.toggle-switch{position:relative;width:40px;height:20px;cursor:pointer}
+.toggle-switch input{opacity:0;width:0;height:0;position:absolute}
+.toggle-track{position:absolute;inset:0;background:var(--gd);border-radius:10px;transition:.2s}
+.toggle-switch input:checked+.toggle-track{background:var(--or)}
+.toggle-thumb{position:absolute;top:3px;left:3px;width:14px;height:14px;background:#fff;border-radius:50%;transition:.2s}
+.toggle-switch input:checked~.toggle-thumb{left:23px}
+.toggle-yr{font-size:10px;font-family:var(--fh);font-weight:700;color:var(--or)}
+/* ── TABS ── */
+.tabs{height:var(--th);background:var(--ks);border-bottom:1px solid var(--gd);display:flex;padding:0 20px;align-items:flex-end;flex-shrink:0}
+.tab{padding:8px 18px;font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--gm);cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;transition:.15s;white-space:nowrap}
+.tab:hover{color:var(--of)}
+.tab.active{color:var(--or);border-bottom-color:var(--or)}
+/* ── CONTENT ── */
+.content{height:var(--ch);overflow-y:auto;overflow-x:hidden;padding:10px 14px;display:none}
+.content.active{display:block}
+/* ── KPI ROW ── */
+.krow{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:10px}
+.kpi{background:var(--ks);border:1px solid var(--gd);border-left:3px solid var(--gd);border-radius:5px;padding:10px 12px}
+.kpi.a{border-left-color:var(--or)}.kpi.p{border-left-color:var(--gr)}.kpi.n{border-left-color:var(--re)}.kpi.b{border-left-color:var(--bl)}
+.kl{font-size:9px;color:var(--gl);font-family:var(--fh);letter-spacing:.4px;text-transform:uppercase;margin-bottom:3px}
+.kv{font-size:17px;font-weight:700;font-family:var(--fh);line-height:1}
+.kv.or{color:var(--or)}.kv.gr{color:var(--gr)}.kv.re{color:var(--re)}
+.ks2{font-size:9px;color:var(--gm);margin-top:3px}
+.kdiff{font-size:10px;font-weight:700;font-family:var(--fh);margin-top:3px}
+.kdiff.up{color:var(--gr)}.kdiff.dn{color:var(--re)}.kdiff.fl{color:var(--gl)}
+/* ── GRID ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.g21{display:grid;grid-template-columns:2fr 1fr;gap:8px;margin-bottom:8px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px}
+/* ── CARD ── */
+.card{background:var(--ks);border:1px solid var(--gd);border-radius:5px;padding:12px 14px;display:flex;flex-direction:column}
+.ct{font-family:var(--fh);font-size:9px;font-weight:700;color:var(--gl);letter-spacing:.8px;text-transform:uppercase;margin-bottom:2px;display:flex;align-items:center;gap:6px}
+.ct::before{content:'';width:2px;height:10px;background:var(--or);border-radius:1px;flex-shrink:0}
+.cs{font-size:9px;color:var(--gd);margin-bottom:8px}
+.cw{flex:1;position:relative;min-height:0}
+canvas{display:block;width:100%!important}
+/* ── LEGEND ── */
+.leg{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.li{display:flex;align-items:center;gap:4px;font-size:9px;color:var(--gl)}
+.ld{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+/* ── TABLE ── */
+.twrap{overflow:auto;max-height:200px}
+table{width:100%;border-collapse:collapse;font-size:10px}
+th{background:var(--kd);color:var(--or);font-family:var(--fh);font-size:8px;letter-spacing:.8px;text-transform:uppercase;padding:7px 8px;text-align:left;border-bottom:1px solid var(--or);position:sticky;top:0}
+td{padding:6px 8px;border-bottom:1px solid var(--kd);white-space:nowrap}
+tr:hover td{background:rgba(255,65,20,.04)}
+.tr{text-align:right;font-family:var(--fh);font-size:10px}
+.pill{display:inline-block;padding:1px 6px;background:rgba(255,65,20,.15);color:var(--or);border-radius:2px;font-size:8px;font-family:var(--fh);font-weight:700;text-transform:uppercase}
+.sep{height:1px;background:var(--gd);opacity:.3;margin:4px 0 10px}
+/* ── TOOLTIP ── */
+#tip{position:fixed;background:rgba(10,10,10,.97);border:1px solid var(--gd);border-left:3px solid var(--or);border-radius:4px;padding:8px 12px;font-size:10px;color:var(--of);pointer-events:none;display:none;z-index:9999;max-width:240px;line-height:1.6;font-family:var(--fb)}
+#tip b{color:var(--or)}
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:var(--kd)}
+::-webkit-scrollbar-thumb{background:var(--gd);border-radius:2px}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-l">
+    <div class="logo">AM</div>
+    <div><h1>Andrade Maia Advogados · Dashboard Financeiro</h1><p>Jan–Jul · Confidencial · klit.com.br</p></div>
+  </div>
+  <div class="hdr-r">
+    <div class="toggle-wrap">
+      <span class="toggle-lbl">Comparar 2024</span>
+      <label class="toggle-switch">
+        <input type="checkbox" id="togCmp" onchange="onToggle()">
+        <div class="toggle-track"></div>
+        <div class="toggle-thumb"></div>
+      </label>
+      <span class="toggle-yr" id="togYrLbl" style="display:none">2024 ativo</span>
+    </div>
+    <div class="hbadge">Período<b id="periodoLbl">2025</b></div>
+    <div class="hbadge">Principal cliente<b>AEGEA</b></div>
+    <div class="hbadge">Gerado<b id="gd">—</b></div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" onclick="sw('receitas',this)">▶ Receitas</button>
+  <button class="tab" onclick="sw('despesas',this)">▼ Despesas</button>
+  <button class="tab" onclick="sw('modelo',this)">◈ Demonstrativo</button>
+</div>
+
+<div id="tip"></div>
+
+<!-- ═══════════ RECEITAS ═══════════ -->
+<div class="content active" id="tab-receitas">
+  <div class="krow" id="kpiR"></div>
+  <div class="g21">
+    <div class="card" style="height:230px">
+      <div class="ct">Receita Total por Mês</div>
+      <div class="cs">2025 vs 2024 simulado — barras agrupadas</div>
+      <div class="cw"><canvas id="cRM"></canvas></div>
+      <div class="leg" id="lgRM"></div>
+    </div>
+    <div class="card" style="height:230px">
+      <div class="ct">Composição por Tipo</div>
+      <div class="cs">Honorários · Êxitos · Extras</div>
+      <div class="cw"><canvas id="cRT"></canvas></div>
+      <div class="leg" id="lgRT"></div>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card" style="height:200px">
+      <div class="ct">Receita por Cliente</div>
+      <div class="cs">Top 4 · Jan–Jul</div>
+      <div class="cw"><canvas id="cRC"></canvas></div>
+    </div>
+    <div class="card" style="height:200px">
+      <div class="ct">Receita por Matéria Jurídica</div>
+      <div class="cs">Trabalhista · Cível · Tributário</div>
+      <div class="cw"><canvas id="cRMat"></canvas></div>
+      <div class="leg" id="lgRMat"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ct">Tabela — Receitas Mensais</div><div class="sep"></div>
+    <div class="twrap"><table id="tblR"></table></div>
+  </div>
+</div>
+
+<!-- ═══════════ DESPESAS ═══════════ -->
+<div class="content" id="tab-despesas">
+  <div class="krow" id="kpiD"></div>
+  <div class="g21">
+    <div class="card" style="height:230px">
+      <div class="ct">Despesas por Mês</div>
+      <div class="cs">2025 vs 2024 simulado — barras agrupadas</div>
+      <div class="cw"><canvas id="cDM"></canvas></div>
+      <div class="leg" id="lgDM"></div>
+    </div>
+    <div class="card" style="height:230px">
+      <div class="ct">Composição por Categoria</div>
+      <div class="cs">Pessoal · Jurídico · TI · Adm</div>
+      <div class="cw"><canvas id="cDCat"></canvas></div>
+      <div class="leg" id="lgDCat"></div>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card" style="height:200px">
+      <div class="ct">Receita × Despesa 2025</div>
+      <div class="cs">Barras agrupadas — cobertura mensal</div>
+      <div class="cw"><canvas id="cRvD"></canvas></div>
+      <div class="leg" id="lgRvD"></div>
+    </div>
+    <div class="card" style="height:200px">
+      <div class="ct">% Despesa / Receita</div>
+      <div class="cs">2025 vs 2024 — eficiência operacional</div>
+      <div class="cw"><canvas id="cDPct"></canvas></div>
+      <div class="leg" id="lgDPct"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ct">Tabela — Despesas Mensais</div><div class="sep"></div>
+    <div class="twrap"><table id="tblD"></table></div>
+  </div>
+</div>
+
+<!-- ═══════════ MODELO ═══════════ -->
+<div class="content" id="tab-modelo">
+  <div class="krow" id="kpiM"></div>
+  <div class="g2">
+    <div class="card" style="height:230px">
+      <div class="ct">Rec. Bruta · Líquida · Margem — 2025 vs 2024</div>
+      <div class="cs">Projeto AEGEA · R$ mil</div>
+      <div class="cw"><canvas id="cDL"></canvas></div>
+      <div class="leg" id="lgDL"></div>
+    </div>
+    <div class="card" style="height:230px">
+      <div class="ct">Estrutura de Custos por Mês</div>
+      <div class="cs">Pessoal · Corresp · Captação · Outros — R$ mil</div>
+      <div class="cw"><canvas id="cDC"></canvas></div>
+      <div class="leg" id="lgDC"></div>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card" style="height:200px">
+      <div class="ct">Margem Bruta % — 2025 vs 2024</div>
+      <div class="cs">Eficiência operacional mensal comparada</div>
+      <div class="cw"><canvas id="cMarg"></canvas></div>
+      <div class="leg" id="lgMarg"></div>
+    </div>
+    <div class="card" style="height:200px">
+      <div class="ct">Decomposição da Receita Bruta</div>
+      <div class="cs">Margem · Custos · Impostos — R$ mil</div>
+      <div class="cw"><canvas id="cDeco"></canvas></div>
+      <div class="leg" id="lgDeco"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ct">DRE — AEGEA · Jan–Jul 2025 vs 2024</div><div class="sep"></div>
+    <div class="twrap"><table id="tblM"></table></div>
+  </div>
+</div>
+
+<script>
+// ── PALETTE ─────────────────────────────────────────────────────────
+const P={or:'#FF4114',or2:'#FF8866',bl:'#1E6FDE',bl2:'#5B96F4',
+  gr:'#22C55E',re:'#EF4444',ye:'#F59E0B',pu:'#8B5CF6',
+  wh:'#FFF',gl:'#9B9B9B',gd:'#3A3A3A',gm:'#5A5A5A',kd:'#111',ks:'#1A1A1A'};
+
+// ── FORMAT ──────────────────────────────────────────────────────────
+const fBRL=v=>v==null||isNaN(v)?'—':v.toLocaleString('pt-BR',{style:'currency',currency:'BRL',minimumFractionDigits:0});
+const fM  =v=>v==null?'—':`R$${(v/1e6).toFixed(2)}M`;
+const fK  =v=>v==null?'—':`R$${(v/1e3).toFixed(0)}k`;
+const fPct=v=>(v>=0?'+':'')+(v*100).toFixed(1)+'%';
+const fP2 =v=>`${(v*100).toFixed(1)}%`;
+const bCls=v=>v>0.005?'up':v<-0.005?'dn':'fl';
+const bClsInv=v=>v<-0.005?'up':v>0.005?'dn':'fl'; // for despesas (less=better)
+
+// ── DATA 2025 ───────────────────────────────────────────────────────
+const M=['Jan','Fev','Mar','Abr','Mai','Jun','Jul'];
+const R25={
+  hon:[4557945,5179984,4752198,5057351,5318193,4886314,4314349],
+  ext:[116931,72483,485036,214013,70830,76100,171431],
+  exit:[0,4856634,1393489,0,0,2080399,0],
+};
+const D25={
+  Pessoal:[1285238,1428755,1413291,1437951,1527267,1469563,1446426],
+  Jurídico:[51122,1074829,2140005,254619,92100,53640,89944],
+  TI:[26823,26310,62061,27741,28137,34540,45040],
+  Adm:[1927,2326,1768,1573,7302,6400,6243],
+  'Mkt':[0,0,0,0,946,0,0],
+};
+const DRE25={
+  rb:[296272,304752,341136,255854,246164,248082,259802],
+  imp:[43048,44280,49567,37176,35768,36046,37749],
+  rl:[253223,260472,291569,218679,210397,212036,222052],
+  cap:[12889,13024,22530,10832,10520,10602,11255],
+  pes:[32575,35164,35647,32013,38692,40638,41927],
+  cor:[3930,4015,695,2985,8965,4025,9385],
+  out:[339,196,3201,151,461,118,2313],
+  mb:[203491,208072,229496,172698,151758,156652,157173],
+};
+const RC25={'AEGEA':32499131,'HMV':5964082,'COLOMBO':2761057,'BRASKEM':2379409};
+const RM25={'Trabalhista':18958880,'Cível':14342223,'Tributário':10302577};
+
+// ── DATA 2024 (simulado: receita -10%, despesa -15%) ─────────────────
+const scale=(arr,f)=>arr.map(v=>Math.round(v*f));
+const R24={hon:scale(R25.hon,.9),ext:scale(R25.ext,.9),exit:scale(R25.exit,.9)};
+const D24={};Object.keys(D25).forEach(k=>D24[k]=scale(D25[k],.85));
+const DRE24={
+  rb:scale(DRE25.rb,.9),imp:scale(DRE25.imp,.9),rl:scale(DRE25.rl,.9),
+  cap:scale(DRE25.cap,.85),pes:scale(DRE25.pes,.85),cor:scale(DRE25.cor,.85),
+  out:scale(DRE25.out,.85),mb:scale(DRE25.mb,.9),
+};
+const RC24=Object.fromEntries(Object.entries(RC25).map(([k,v])=>[k,Math.round(v*.9)]));
+const RM24=Object.fromEntries(Object.entries(RM25).map(([k,v])=>[k,Math.round(v*.9)]));
+
+// ── STATE ────────────────────────────────────────────────────────────
+let showCmp=false;
+let activeTab='receitas';
+
+function onToggle(){
+  showCmp=document.getElementById('togCmp').checked;
+  document.getElementById('togYrLbl').style.display=showCmp?'':'none';
+  document.getElementById('periodoLbl').textContent=showCmp?'2025 vs 2024':'2025';
+  rerender();
+}
+
+// computed totals
+const tot=(arr)=>arr.reduce((a,b)=>a+b,0);
+const recTot25=M.map((_,i)=>R25.hon[i]+R25.ext[i]+R25.exit[i]);
+const recTot24=M.map((_,i)=>R24.hon[i]+R24.ext[i]+R24.exit[i]);
+const desTot25=M.map((_,i)=>Object.values(D25).reduce((s,a)=>s+a[i],0));
+const desTot24=M.map((_,i)=>Object.values(D24).reduce((s,a)=>s+a[i],0));
+
+// ── TOOLTIP ─────────────────────────────────────────────────────────
+const tip=document.getElementById('tip');
+function showTip(ev,lines){tip.innerHTML=lines.join('<br>');tip.style.display='block';moveTip(ev)}
+function moveTip(ev){
+  const x=ev.clientX+14,y=ev.clientY-10;
+  tip.style.left=(x+200>window.innerWidth?ev.clientX-220:x)+'px';
+  tip.style.top=y+'px';
+}
+function hideTip(){tip.style.display='none'}
+
+// ── CANVAS ENGINE ───────────────────────────────────────────────────
+const DPR=()=>window.devicePixelRatio||1;
+
+function initC(id,h){
+  const c=document.getElementById(id);
+  if(!c)return null;
+  const wrap=c.parentElement;
+  const W=wrap.clientWidth||300;
+  const H=h||wrap.clientHeight||160;
+  const r=DPR();
+  c.width=W*r;c.height=H*r;c.style.width=W+'px';c.style.height=H+'px';
+  const ctx=c.getContext('2d');ctx.scale(r,r);
+  return{c,ctx,W,H};
+}
+
+function yFmt(v){
+  if(v>=1e6)return`${(v/1e6).toFixed(1)}M`;
+  if(v>=1e3)return`${(v/1e3).toFixed(0)}k`;
+  return v.toFixed(0);
+}
+
+// Grid helper
+function drawGrid(ctx,W,H,pad,maxV,steps=5,pct=false){
+  ctx.strokeStyle='rgba(255,255,255,.05)';ctx.lineWidth=1;
+  for(let i=0;i<=steps;i++){
+    const y=pad.t+((H-pad.t-pad.b)/steps)*i;
+    ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(W-pad.r,y);ctx.stroke();
+    const val=maxV*(1-i/steps);
+    ctx.fillStyle=P.gl;ctx.font=`9px sans-serif`;ctx.textAlign='right';ctx.textBaseline='middle';
+    ctx.fillText(pct?`${(val*100).toFixed(0)}%`:yFmt(val),pad.l-4,y);
+  }
+}
+
+// Grouped bar (up to 3 datasets)
+function gBar(id,labels,datasets,opts={}){
+  const cv=initC(id);if(!cv)return;
+  const{c,ctx,W,H}=cv;
+  const pad={t:16,r:8,b:28,l:opts.pct?36:52};
+  const cW=W-pad.l-pad.r,cH=H-pad.t-pad.b;
+  const n=labels.length,ns=datasets.length;
+  const allV=datasets.flatMap(d=>d.data.map(Math.abs));
+  const maxV=Math.max(...allV,1)*1.12;
+  const gW=cW/n;
+  const bW=Math.min(gW*.7/ns,18),gap=(gW-bW*ns)/2;
+  const hits=[];
+  drawGrid(ctx,W,H,pad,maxV,4,opts.pct);
+  datasets.forEach((ds,si)=>{
+    ds.data.forEach((v,i)=>{
+      const bH=Math.max(0,Math.abs(v)/maxV*cH);
+      const x=pad.l+i*gW+gap+si*bW;
+      const y=pad.t+cH-bH;
+      const g=ctx.createLinearGradient(0,y,0,y+bH);
+      g.addColorStop(0,ds.color);g.addColorStop(1,ds.color+'44');
+      ctx.fillStyle=g;ctx.beginPath();ctx.roundRect(x,y,bW,bH,2);ctx.fill();
+      hits.push({x,y,w:bW,h:bH,lbl:ds.label,cat:labels[i],val:v,pct:opts.pct});
+    });
+  });
+  ctx.fillStyle=P.gl;ctx.font='9px sans-serif';ctx.textAlign='center';ctx.textBaseline='top';
+  labels.forEach((l,i)=>ctx.fillText(l,pad.l+i*gW+gW/2,H-14));
+  c.onmousemove=ev=>{
+    const r=c.getBoundingClientRect();
+    const mx=ev.clientX-r.left,my=ev.clientY-r.top;
+    const h=hits.find(t=>mx>=t.x&&mx<=t.x+t.w&&my>=t.y&&my<=t.y+t.h);
+    if(h)showTip(ev,[`<b>${h.cat}</b>`,`${h.lbl}: <b>${h.pct?fP2(h.val):fBRL(h.val)}</b>`]);
+    else hideTip();
+  };
+  c.onmouseleave=hideTip;
+}
+
+// Stacked bar
+function sBar(id,labels,datasets){
+  const cv=initC(id);if(!cv)return;
+  const{c,ctx,W,H}=cv;
+  const pad={t:16,r:8,b:28,l:52};
+  const cW=W-pad.l-pad.r,cH=H-pad.t-pad.b;
+  const n=labels.length;
+  const totals=labels.map((_,i)=>datasets.reduce((s,d)=>s+(d.data[i]||0),0));
+  const maxV=Math.max(...totals,1)*1.12;
+  const gW=cW/n;
+  const bW=Math.min(gW*.6,22);
+  const hits=[];
+  drawGrid(ctx,W,H,pad,maxV,4);
+  labels.forEach((_,ci)=>{
+    const x=pad.l+ci*gW+(gW-bW)/2;
+    let acc=0;
+    datasets.forEach(ds=>{
+      const v=ds.data[ci]||0;
+      const bH=v/maxV*cH;
+      const y=pad.t+cH-acc-bH;
+      ctx.fillStyle=ds.color;ctx.beginPath();ctx.roundRect(x,y,bW,bH,acc===0?[0,0,2,2]:[0,0,0,0]);ctx.fill();
+      hits.push({x,y,w:bW,h:bH,lbl:ds.label,cat:labels[ci],val:v});
+      acc+=bH;
+    });
+  });
+  ctx.fillStyle=P.gl;ctx.font='9px sans-serif';ctx.textAlign='center';ctx.textBaseline='top';
+  labels.forEach((l,i)=>ctx.fillText(l,pad.l+i*gW+gW/2,H-14));
+  c.onmousemove=ev=>{
+    const r=c.getBoundingClientRect();
+    const mx=ev.clientX-r.left,my=ev.clientY-r.top;
+    const h=hits.find(t=>mx>=t.x&&mx<=t.x+t.w&&my>=t.y&&my<=t.y+t.h);
+    if(h)showTip(ev,[`<b>${h.cat}</b>`,`${h.lbl}: <b>${fBRL(h.val)}</b>`]);
+    else hideTip();
+  };
+  c.onmouseleave=hideTip;
+}
+
+// Doughnut
+function dnut(id,labels,values,colors){
+  const cv=initC(id);if(!cv)return;
+  const{c,ctx,W,H}=cv;
+  const cx=W/2,cy=H/2,r=Math.min(W,H)*.38,inn=r*.56;
+  const tot=values.reduce((a,b)=>a+b,0);
+  let ang=-Math.PI/2;
+  const hits=[];
+  values.forEach((v,i)=>{
+    const sw=v/tot*Math.PI*2;
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,ang,ang+sw);ctx.closePath();
+    ctx.fillStyle=colors[i];ctx.fill();
+    hits.push({ang,sw,v,lbl:labels[i]});ang+=sw;
+  });
+  ctx.beginPath();ctx.arc(cx,cy,inn,0,Math.PI*2);ctx.fillStyle=P.ks;ctx.fill();
+  ctx.fillStyle=P.wh;ctx.font=`bold 11px Montserrat,sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText(yFmt(tot),cx,cy-5);
+  ctx.fillStyle=P.gl;ctx.font='8px sans-serif';ctx.fillText('Total',cx,cy+8);
+  c.onmousemove=ev=>{
+    const rect=c.getBoundingClientRect();
+    const mx=ev.clientX-rect.left-cx,my=ev.clientY-rect.top-cy;
+    const dist=Math.sqrt(mx*mx+my*my);
+    if(dist<r&&dist>inn){
+      let a=Math.atan2(my,mx);if(a<-Math.PI/2)a+=Math.PI*2;
+      const h=hits.find(t=>{let e=t.ang+t.sw;return a>=t.ang&&a<e});
+      if(h)showTip(ev,[`<b>${h.lbl}</b>`,`${fBRL(h.v)} · <b>${(h.v/tot*100).toFixed(1)}%</b>`]);
+      else hideTip();
+    }else hideTip();
+  };
+  c.onmouseleave=hideTip;
+}
+
+// Horizontal bar
+function hBar(id,labels,values,colors){
+  const cv=initC(id);if(!cv)return;
+  const{c,ctx,W,H}=cv;
+  const maxL=Math.max(...labels.map(l=>l.length))*5.5+6;
+  const pad={t:8,r:70,b:8,l:maxL};
+  const cW=W-pad.l-pad.r,cH=H-pad.t-pad.b;
+  const bH=Math.min(cH/values.length*.55,20);
+  const maxV=Math.max(...values)*1.1||1;
+  const hits=[];
+  values.forEach((v,i)=>{
+    const y=pad.t+i*(cH/values.length)+(cH/values.length-bH)/2;
+    const bW=v/maxV*cW;
+    const col=Array.isArray(colors)?colors[i%colors.length]:colors;
+    const g=ctx.createLinearGradient(pad.l,0,pad.l+bW,0);
+    g.addColorStop(0,col);g.addColorStop(1,col+'44');
+    ctx.fillStyle=g;ctx.beginPath();ctx.roundRect(pad.l,y,bW,bH,2);ctx.fill();
+    ctx.fillStyle=P.gl;ctx.font='9px sans-serif';ctx.textAlign='right';ctx.textBaseline='middle';
+    ctx.fillText(labels[i],pad.l-4,y+bH/2);
+    ctx.fillStyle=P.wh;ctx.font='bold 8px sans-serif';ctx.textAlign='left';
+    ctx.fillText(fBRL(v),pad.l+bW+4,y+bH/2);
+    hits.push({x:pad.l,y,w:bW,h:bH,lbl:labels[i],val:v});
+  });
+  c.onmousemove=ev=>{
+    const r=c.getBoundingClientRect();
+    const mx=ev.clientX-r.left,my=ev.clientY-r.top;
+    const h=hits.find(t=>mx>=t.x&&mx<=t.x+t.w&&my>=t.y&&my<=t.y+t.h);
+    if(h)showTip(ev,[`<b>${h.lbl}</b>`,`<b>${fBRL(h.val)}</b>`]);
+    else hideTip();
+  };
+  c.onmouseleave=hideTip;
+}
+
+// Line
+function line(id,labels,datasets){
+  const cv=initC(id);if(!cv)return;
+  const{c,ctx,W,H}=cv;
+  const pad={t:16,r:12,b:28,l:52};
+  const cW=W-pad.l-pad.r,cH=H-pad.t-pad.b;
+  const maxV=Math.max(...datasets.flatMap(d=>d.data),1)*1.12;
+  drawGrid(ctx,W,H,pad,maxV,4);
+  const px=(i)=>pad.l+i*(cW/(labels.length-1));
+  const py=(v)=>pad.t+cH*(1-v/maxV);
+  datasets.forEach(ds=>{
+    const pts=ds.data.map((v,i)=>({x:px(i),y:py(v)}));
+    if(ds.fill){
+      ctx.beginPath();ctx.moveTo(pts[0].x,pad.t+cH);
+      pts.forEach(p=>ctx.lineTo(p.x,p.y));
+      ctx.lineTo(pts[pts.length-1].x,pad.t+cH);ctx.closePath();
+      ctx.fillStyle=ds.color+'18';ctx.fill();
+    }
+    ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);
+    pts.slice(1).forEach(p=>ctx.lineTo(p.x,p.y));
+    ctx.strokeStyle=ds.color;ctx.lineWidth=ds.dash?1.5:2;
+    if(ds.dash)ctx.setLineDash([5,4]);else ctx.setLineDash([]);
+    ctx.stroke();ctx.setLineDash([]);
+    pts.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,3,0,Math.PI*2);ctx.fillStyle=ds.color;ctx.fill()});
+  });
+  ctx.fillStyle=P.gl;ctx.font='9px sans-serif';ctx.textAlign='center';ctx.textBaseline='top';
+  labels.forEach((l,i)=>ctx.fillText(l,px(i),H-14));
+  c.onmousemove=ev=>{
+    const r=c.getBoundingClientRect();
+    const mx=ev.clientX-r.left;
+    const idx=Math.round((mx-pad.l)/(cW/(labels.length-1)));
+    if(idx>=0&&idx<labels.length){
+      const lines=[`<b>${labels[idx]}</b>`];
+      datasets.forEach(d=>lines.push(`${d.label}: <b>${fBRL(d.data[idx])}</b>`));
+      showTip(ev,lines);
+    }else hideTip();
+  };
+  c.onmouseleave=hideTip;
+}
+
+function leg(id,items){
+  const el=document.getElementById(id);if(!el)return;
+  el.innerHTML=items.map(it=>`<div class="li"><div class="ld" style="background:${it.c}${it.dash?';opacity:.6':''}"></div>${it.l}</div>`).join('');
+}
+
+// ── KPI ─────────────────────────────────────────────────────────────
+function kpi(elId,cards){
+  document.getElementById(elId).innerHTML=cards.map(k=>`
+    <div class="kpi ${k.cls||''}">
+      <div class="kl">${k.l}</div>
+      <div class="kv${k.vc?' '+k.vc:''}">${k.v}</div>
+      ${k.v2?`<div class="ks2">2024 sim: ${k.v2}</div>`:''}
+      ${k.diff!=null?`<div class="kdiff ${bCls(k.diff)}">${fPct(k.diff)} vs 2024</div>`:''}
+    </div>`).join('');
+}
+
+// ── RENDER RECEITAS ──────────────────────────────────────────────────
+function renderR(){
+  const ytd25=tot(recTot25),ytd24=tot(recTot24);
+  const honYtd=tot(R25.hon),exitYtd=tot(R25.exit),extYtd=tot(R25.ext);
+  kpi('kpiR',[
+    {l:'Receita YTD 2025',v:fM(ytd25),v2:showCmp?fM(ytd24):null,diff:showCmp?(ytd25-ytd24)/ytd24:null,cls:'a',vc:'or'},
+    {l:'Média Mensal',v:fM(ytd25/7),v2:showCmp?fM(ytd24/7):null,diff:showCmp?(ytd25-ytd24)/ytd24:null},
+    {l:'Honorários',v:fM(honYtd),v2:showCmp?fM(tot(R24.hon)):null,diff:showCmp?(honYtd-tot(R24.hon))/tot(R24.hon):null,cls:'p'},
+    {l:'Êxitos',v:fM(exitYtd),v2:showCmp?fM(tot(R24.exit)):null,diff:showCmp?(exitYtd-tot(R24.exit))/tot(R24.exit):null},
+    {l:'Extras',v:fM(extYtd),v2:showCmp?fM(tot(R24.ext)):null,diff:null},
+    {l:'Maior Mês',v:fM(Math.max(...recTot25)),v2:showCmp?fM(Math.max(...recTot24)):null,diff:null,cls:'p'},
+  ]);
+
+  // Grouped bar 2025 vs 2024
+  if(showCmp){
+    gBar('cRM',M,[
+      {label:'2025',data:recTot25,color:P.or},
+      {label:'2024 sim',data:recTot24,color:P.bl},
+    ]);
+    leg('lgRM',[{c:P.or,l:'2025'},{c:P.bl,l:'2024 simulado'}]);
+  } else {
+    sBar('cRM',M,[
+      {label:'Honorários',data:R25.hon,color:P.or},
+      {label:'Êxitos',data:R25.exit,color:P.bl},
+      {label:'Extras',data:R25.ext,color:P.gr},
+    ]);
+    leg('lgRM',[{c:P.or,l:'Honorários'},{c:P.bl,l:'Êxitos'},{c:P.gr,l:'Extras'}]);
+  }
+
+  // Doughnut tipo
+  const RC=showCmp?RC24:RC25,RM_=showCmp?RM24:RM25;
+  dnut('cRT',['Honorários','Êxitos','Extras'],
+    [showCmp?tot(R24.hon):tot(R25.hon),showCmp?tot(R24.exit):tot(R25.exit),showCmp?tot(R24.ext):tot(R25.ext)],
+    [P.or,P.bl,P.gr]);
+  leg('lgRT',[{c:P.or,l:'Honorários'},{c:P.bl,l:'Êxitos'},{c:P.gr,l:'Extras'}]);
+
+  // Horizontal clientes
+  const cl=Object.entries(showCmp?RC24:RC25).sort((a,b)=>b[1]-a[1]);
+  hBar('cRC',cl.map(x=>x[0]),cl.map(x=>x[1]),[P.or,P.bl,P.gr,P.ye]);
+
+  // Doughnut matéria
+  const mat=Object.entries(showCmp?RM24:RM25).sort((a,b)=>b[1]-a[1]);
+  dnut('cRMat',mat.map(x=>x[0]),mat.map(x=>x[1]),[P.bl,P.or,P.ye]);
+  leg('lgRMat',mat.map((x,i)=>({c:[P.bl,P.or,P.ye][i],l:x[0]})));
+
+  buildTblR();
+}
+
+// ── RENDER DESPESAS ──────────────────────────────────────────────────
+function renderD(){
+  const ytd25=tot(desTot25),ytd24=tot(desTot24);
+  const pesYtd=tot(D25.Pessoal),pesYtd24=tot(D24.Pessoal);
+  const cob25=(tot(recTot25)/ytd25).toFixed(1),cob24=(tot(recTot24)/ytd24).toFixed(1);
+  kpi('kpiD',[
+    {l:'Despesas YTD 2025',v:fM(ytd25),v2:showCmp?fM(ytd24):null,diff:showCmp?(ytd25-ytd24)/ytd24:null,cls:'n'},
+    {l:'Média Mensal',v:fM(ytd25/7),v2:showCmp?fM(ytd24/7):null,diff:showCmp?(ytd25-ytd24)/ytd24:null},
+    {l:'% Pessoal',v:`${(pesYtd/ytd25*100).toFixed(0)}%`,v2:showCmp?`${(pesYtd24/ytd24*100).toFixed(0)}%`:null,diff:null},
+    {l:'Cobertura Rec/Des',v:`${cob25}×`,v2:showCmp?`${cob24}×`:null,diff:null,cls:'p'},
+    {l:'Maior Mês',v:fM(Math.max(...desTot25)),v2:showCmp?fM(Math.max(...desTot24)):null,diff:null,cls:'n'},
+    {l:'Categorias',v:'5',diff:null},
+  ]);
+
+  const cats=Object.keys(D25);
+  const pal=[P.or,P.bl,P.gr,P.ye,P.pu];
+
+  if(showCmp){
+    gBar('cDM',M,[
+      {label:'2025',data:desTot25,color:P.or},
+      {label:'2024 sim',data:desTot24,color:P.bl},
+    ]);
+    leg('lgDM',[{c:P.or,l:'2025'},{c:P.bl,l:'2024 simulado'}]);
+  } else {
+    sBar('cDM',M,cats.map((k,i)=>({label:k,data:D25[k],color:pal[i]})));
+    leg('lgDM',cats.map((k,i)=>({c:pal[i],l:k})));
+  }
+
+  dnut('cDCat',cats,cats.map(k=>tot(showCmp?D24[k]:D25[k])),pal);
+  leg('lgDCat',cats.map((k,i)=>({c:pal[i],l:k})));
+
+  gBar('cRvD',M,[
+    {label:'Receita 2025',data:recTot25,color:P.or},
+    {label:'Despesas 2025',data:desTot25,color:P.re},
+  ]);
+  leg('lgRvD',[{c:P.or,l:'Receita'},{c:P.re,l:'Despesas'}]);
+
+  // % despesa/receita 2025 vs 2024
+  const pct25=M.map((_,i)=>desTot25[i]/recTot25[i]);
+  const pct24=M.map((_,i)=>desTot24[i]/recTot24[i]);
+  if(showCmp){
+    gBar('cDPct',M,[
+      {label:'2025',data:pct25,color:P.or},
+      {label:'2024 sim',data:pct24,color:P.bl},
+    ],{pct:true});
+    leg('lgDPct',[{c:P.or,l:'2025'},{c:P.bl,l:'2024 simulado'}]);
+  } else {
+    gBar('cDPct',M,[{label:'2025',data:pct25,color:pct25.map(v=>v<.25?P.gr:v<.4?P.ye:P.re)[0]||P.or}],{pct:true});
+    leg('lgDPct',[{c:P.or,l:'% Desp/Receita 2025'}]);
+  }
+
+  buildTblD();
+}
+
+// ── RENDER MODELO ─────────────────────────────────────────────────────
+function renderM(){
+  const ytdMb25=tot(DRE25.mb),ytdMb24=tot(DRE24.mb);
+  const ytdRb25=tot(DRE25.rb),ytdRb24=tot(DRE24.rb);
+  const mPct25=ytdMb25/ytdRb25,mPct24=ytdMb24/ytdRb24;
+  kpi('kpiM',[
+    {l:'Rec. Bruta YTD 2025',v:fK(ytdRb25),v2:showCmp?fK(ytdRb24):null,diff:showCmp?(ytdRb25-ytdRb24)/ytdRb24:null,cls:'a',vc:'or'},
+    {l:'Rec. Líquida YTD',v:fK(tot(DRE25.rl)),v2:showCmp?fK(tot(DRE24.rl)):null,diff:showCmp?(tot(DRE25.rl)-tot(DRE24.rl))/tot(DRE24.rl):null},
+    {l:'Margem Bruta YTD',v:fK(ytdMb25),v2:showCmp?fK(ytdMb24):null,diff:showCmp?(ytdMb25-ytdMb24)/ytdMb24:null,cls:'p',vc:'gr'},
+    {l:'Margem % Média',v:fP2(mPct25),v2:showCmp?fP2(mPct24):null,diff:showCmp?(mPct25-mPct24):null,cls:'p'},
+    {l:'Impostos YTD',v:fK(tot(DRE25.imp)),v2:showCmp?fK(tot(DRE24.imp)):null,diff:null,cls:'n'},
+    {l:'Pessoal YTD',v:fK(tot(DRE25.pes)),v2:showCmp?fK(tot(DRE24.pes)):null,diff:null},
+  ]);
+
+  // Line: Rec Bruta + Margem — 2025 vs 2024
+  if(showCmp){
+    line('cDL',M,[
+      {label:'Rec. Bruta 2025',data:DRE25.rb,color:P.or,fill:true},
+      {label:'Rec. Bruta 2024',data:DRE24.rb,color:P.or,dash:true},
+      {label:'Margem 2025',data:DRE25.mb,color:P.gr},
+      {label:'Margem 2024',data:DRE24.mb,color:P.gr,dash:true},
+    ]);
+    leg('lgDL',[{c:P.or,l:'Rec. Bruta 2025'},{c:P.or,l:'Rec. Bruta 2024',dash:true},{c:P.gr,l:'Margem 2025'},{c:P.gr,l:'Margem 2024',dash:true}]);
+  } else {
+    line('cDL',M,[
+      {label:'Rec. Bruta',data:DRE25.rb,color:P.or,fill:true},
+      {label:'Rec. Líquida',data:DRE25.rl,color:P.bl},
+      {label:'Margem',data:DRE25.mb,color:P.gr},
+    ]);
+    leg('lgDL',[{c:P.or,l:'Rec. Bruta'},{c:P.bl,l:'Rec. Líquida'},{c:P.gr,l:'Margem'}]);
+  }
+
+  sBar('cDC',M,[
+    {label:'Pessoal',data:showCmp?DRE24.pes:DRE25.pes,color:P.or},
+    {label:'Corresp.',data:showCmp?DRE24.cor:DRE25.cor,color:P.bl},
+    {label:'Captação',data:showCmp?DRE24.cap:DRE25.cap,color:P.ye},
+    {label:'Outros',data:showCmp?DRE24.out:DRE25.out,color:P.gr},
+  ]);
+  leg('lgDC',[{c:P.or,l:'Pessoal'},{c:P.bl,l:'Corresp.'},{c:P.ye,l:'Captação'},{c:P.gr,l:'Outros'}]);
+
+  // Margem % grouped 2025 vs 2024
+  const mp25=M.map((_,i)=>DRE25.mb[i]/DRE25.rb[i]);
+  const mp24=M.map((_,i)=>DRE24.mb[i]/DRE24.rb[i]);
+  if(showCmp){
+    gBar('cMarg',M,[
+      {label:'2025',data:mp25,color:P.or},
+      {label:'2024 sim',data:mp24,color:P.bl},
+    ],{pct:true});
+    leg('lgMarg',[{c:P.or,l:'Margem% 2025'},{c:P.bl,l:'Margem% 2024 sim'}]);
+  } else {
+    gBar('cMarg',M,[{label:'Margem %',data:mp25,color:mp25.map(v=>v>=.65?P.gr:v>=.55?P.ye:P.re)[0]||P.or}],{pct:true});
+    leg('lgMarg',[{c:P.gr,l:'≥65% — ótimo'},{c:P.ye,l:'55–65% — ok'},{c:P.re,l:'<55% — atenção'}]);
+  }
+
+  sBar('cDeco',M,[
+    {label:'Margem',data:showCmp?DRE24.mb:DRE25.mb,color:P.gr},
+    {label:'Custos diretos',data:M.map((_,i)=>(showCmp?DRE24:DRE25).pes[i]+(showCmp?DRE24:DRE25).cor[i]+(showCmp?DRE24:DRE25).cap[i]+(showCmp?DRE24:DRE25).out[i]),color:P.or},
+    {label:'Impostos',data:showCmp?DRE24.imp:DRE25.imp,color:P.re},
+  ]);
+  leg('lgDeco',[{c:P.gr,l:'Margem'},{c:P.or,l:'Custos diretos'},{c:P.re,l:'Impostos'}]);
+
+  buildTblM();
+}
+
+// ── TABLES ───────────────────────────────────────────────────────────
+function buildTblR(){
+  const t=document.getElementById('tblR');
+  const cmpCols=showCmp?['Rec 2024','Δ Rec']:[];
+  const cols=['Mês','Honorários','Êxitos','Extras','Total 2025',...cmpCols,'MoM'];
+  let h=`<tr>${cols.map(c=>`<th>${c}</th>`).join('')}</tr>`;
+  let b='';
+  M.forEach((m,i)=>{
+    const t25=recTot25[i],t24=recTot24[i],prev=i>0?recTot25[i-1]:null;
+    const mom=prev?(t25-prev)/prev:null;
+    const yoy=showCmp?(t25-t24)/t24:null;
+    b+=`<tr>
+      <td><b>${m}</b></td>
+      <td class="tr">${fBRL(R25.hon[i])}</td>
+      <td class="tr">${R25.exit[i]?fBRL(R25.exit[i]):'—'}</td>
+      <td class="tr">${R25.ext[i]?fBRL(R25.ext[i]):'—'}</td>
+      <td class="tr" style="color:${P.or};font-weight:700">${fBRL(t25)}</td>
+      ${showCmp?`<td class="tr" style="color:${P.bl}">${fBRL(t24)}</td><td class="tr"><span style="color:${yoy>0?P.gr:P.re};font-weight:700">${fPct(yoy)}</span></td>`:''}
+      <td class="tr">${mom!=null?`<span style="color:${mom>0?P.gr:P.re};font-size:9px">${fPct(mom)}</span>`:'—'}</td>
+    </tr>`;
+  });
+  const ytd25=tot(recTot25),ytd24=tot(recTot24);
+  b+=`<tr style="font-weight:700;background:#111">
+    <td><span class="pill">YTD</span></td>
+    <td class="tr">${fBRL(tot(R25.hon))}</td>
+    <td class="tr">${fBRL(tot(R25.exit))}</td>
+    <td class="tr">${fBRL(tot(R25.ext))}</td>
+    <td class="tr" style="color:${P.or}">${fBRL(ytd25)}</td>
+    ${showCmp?`<td class="tr" style="color:${P.bl}">${fBRL(ytd24)}</td><td class="tr"><span style="color:${P.gr};font-weight:700">${fPct((ytd25-ytd24)/ytd24)}</span></td>`:''}
+    <td class="tr">—</td>
+  </tr>`;
+  t.innerHTML=`<thead>${h}</thead><tbody>${b}</tbody>`;
+}
+
+function buildTblD(){
+  const t=document.getElementById('tblD');
+  const cats=Object.keys(D25);
+  const cmpCols=showCmp?['Total 2024','Δ']:[];
+  const cols=['Mês',...cats,'Total 2025',...cmpCols];
+  let h=`<tr>${cols.map(c=>`<th>${c}</th>`).join('')}</tr>`;
+  let b='';
+  M.forEach((m,i)=>{
+    const t25=desTot25[i],t24=desTot24[i];
+    const yoy=showCmp?(t25-t24)/t24:null;
+    b+=`<tr>
+      <td><b>${m}</b></td>
+      ${cats.map(k=>`<td class="tr">${D25[k][i]?fBRL(D25[k][i]):'—'}</td>`).join('')}
+      <td class="tr" style="color:${P.re};font-weight:700">${fBRL(t25)}</td>
+      ${showCmp?`<td class="tr" style="color:${P.bl}">${fBRL(t24)}</td><td class="tr"><span style="color:${yoy<0?P.gr:P.re};font-size:9px">${fPct(yoy)}</span></td>`:''}
+    </tr>`;
+  });
+  const ytd25=tot(desTot25),ytd24=tot(desTot24);
+  b+=`<tr style="font-weight:700;background:#111">
+    <td><span class="pill">YTD</span></td>
+    ${cats.map(k=>`<td class="tr">${fBRL(tot(D25[k]))}</td>`).join('')}
+    <td class="tr" style="color:${P.re}">${fBRL(ytd25)}</td>
+    ${showCmp?`<td class="tr" style="color:${P.bl}">${fBRL(ytd24)}</td><td class="tr"><span style="color:${P.gr};font-weight:700">${fPct((ytd25-ytd24)/ytd24)}</span></td>`:''}
+  </tr>`;
+  t.innerHTML=`<thead>${h}</thead><tbody>${b}</tbody>`;
+}
+
+function buildTblM(){
+  const t=document.getElementById('tblM');
+  const rows=[
+    {l:'Receita Bruta',k:'rb',bold:true,c:P.or},
+    {l:'  Honorários',k:'hon',src:'dre',sub:true},
+    {l:'  Extras',k:'ext',src:'dre',sub:true,gl:true},
+    {l:'(−) Impostos',k:'imp',c:P.re},
+    {l:'Receita Líquida',k:'rl',bold:true},
+    {l:'(−) Captação',k:'cap',gl:true},
+    {l:'(−) Pessoal',k:'pes',gl:true},
+    {l:'(−) Corresp.',k:'cor',gl:true},
+    {l:'(−) Outros',k:'out',gl:true},
+    {l:'Margem Bruta',k:'mb',bold:true,c:P.gr},
+    {l:'Margem %',k:'mbpct',pct:true,c:P.gr},
+  ];
+  const cmpH=showCmp?M.flatMap(m=>[m+' 25',m+' 24']):M;
+  let h=`<tr><th>Linha</th>${cmpH.map(m=>`<th>${m}</th>`).join('')}<th>YTD 25</th>${showCmp?'<th>YTD 24</th>':''}</tr>`;
+  let b='';
+  rows.forEach(r=>{
+    const get=(dre,k)=>{
+      if(k==='mbpct')return dre.mb.map((v,i)=>v/dre.rb[i]);
+      if(k==='hon')return dre.rb.map((v,i)=>dre.rb[i]); // placeholder — use rb for hon approx
+      if(k==='ext')return dre.rb.map(()=>0);
+      return dre[k]||[];
+    };
+    const d25=r.k==='mbpct'?DRE25.mb.map((v,i)=>v/DRE25.rb[i]):DRE25[r.k]||[];
+    const d24=r.k==='mbpct'?DRE24.mb.map((v,i)=>v/DRE24.rb[i]):DRE24[r.k]||[];
+    const ytd25v=r.pct?tot(d25)/7:tot(d25);
+    const ytd24v=r.pct?tot(d24)/7:tot(d24);
+    const fmt=v=>r.pct?fP2(v):fBRL(v);
+    let cells='';
+    if(showCmp){
+      M.forEach((_,i)=>{
+        cells+=`<td class="tr" style="${r.c?'color:'+r.c:r.gl?'color:'+P.gl:''}">${d25[i]!=null?fmt(d25[i]):'—'}</td>`;
+        cells+=`<td class="tr" style="color:${P.bl};opacity:.8">${d24[i]!=null?fmt(d24[i]):'—'}</td>`;
+      });
+    } else {
+      M.forEach((_,i)=>cells+=`<td class="tr" style="${r.c?'color:'+r.c:r.gl?'color:'+P.gl:''}">${d25[i]!=null?fmt(d25[i]):'—'}</td>`);
+    }
+    b+=`<tr style="${r.bold?'font-weight:700;background:#111':''}${r.sub?';padding-left:16px':''}">
+      <td style="${r.sub?'padding-left:16px':''};${r.gl?'color:'+P.gl:''}">${r.l}</td>
+      ${cells}
+      <td class="tr" style="font-weight:700;${r.c?'color:'+r.c:''}">${fmt(ytd25v)}</td>
+      ${showCmp?`<td class="tr" style="color:${P.bl}">${fmt(ytd24v)}</td>`:''}
+    </tr>`;
+  });
+  t.innerHTML=`<thead>${h}</thead><tbody>${b}</tbody>`;
+}
+
+// ── TAB SWITCH ────────────────────────────────────────────────────────
+const renders={receitas:renderR,despesas:renderD,modelo:renderM};
+const rendered={};
+
+function sw(tab,btn){
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.content').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  activeTab=tab;
+  setTimeout(()=>{rendered[tab]=true;renders[tab]();},20);
+}
+
+function rerender(){
+  Object.keys(rendered).forEach(t=>{
+    if(rendered[t]){
+      document.getElementById('tab-'+t).classList.contains('active')
+        ?renders[t]()
+        :setTimeout(()=>{if(document.getElementById('tab-'+t).classList.contains('active'))renders[t]();},20);
+    }
+  });
+  // re-render active tab immediately
+  renders[activeTab]&&renders[activeTab]();
+}
+
+// ── RESIZE ───────────────────────────────────────────────────────────
+let rsT;
+new ResizeObserver(()=>{clearTimeout(rsT);rsT=setTimeout(()=>renders[activeTab]&&renders[activeTab](),150)})
+  .observe(document.body);
+
+// ── INIT ─────────────────────────────────────────────────────────────
+document.getElementById('gd').textContent=new Date().toLocaleDateString('pt-BR');
+rendered['receitas']=true;
+renderR();
+</script>
+</body>
+</html>
