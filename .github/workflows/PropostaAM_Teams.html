@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AM Hub · Proposta Essencial · Klit · Julho 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Poppins:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --orange: #FF4114;
+    --bg: #0d0d0d;
+    --bg2: #141414;
+    --bg3: #1a1a1a;
+    --card: #1c1c1c;
+    --border: #2a2a2a;
+    --text: #e8e8e8;
+    --muted: #888;
+    --white: #ffffff;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* COVER */
+  .cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 80px 40px;
+    background: #0a0a0a;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 50% 60%, rgba(255,65,20,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cover-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+  .cover h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(42px, 7vw, 80px);
+    font-weight: 900;
+    line-height: 1.05;
+    color: var(--white);
+    max-width: 780px;
+    margin-bottom: 16px;
+  }
+  .cover h1 span { color: var(--orange); }
+  .cover-sub {
+    font-size: 16px;
+    color: var(--muted);
+    font-weight: 300;
+    max-width: 520px;
+    margin-bottom: 56px;
+    line-height: 1.7;
+  }
+  .cover-badge {
+    display: inline-block;
+    background: rgba(255,65,20,0.12);
+    border: 1px solid rgba(255,65,20,0.3);
+    color: var(--orange);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 8px 20px;
+    border-radius: 2px;
+  }
+  .cover-meta {
+    position: absolute;
+    bottom: 36px;
+    left: 0; right: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 56px;
+    font-size: 11px;
+    color: #444;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .cover-modules {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 40px;
+  }
+  .cover-mod-chip {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border: 1px solid #2a2a2a;
+    color: #666;
+  }
+  .cover-mod-chip.active {
+    border-color: rgba(255,65,20,0.4);
+    color: var(--orange);
+    background: rgba(255,65,20,0.06);
+  }
+
+  /* SECTION */
+  .section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 64px;
+    border-top: 1px solid var(--border);
+  }
+  .section-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    max-width: 48px;
+    height: 1px;
+    background: var(--orange);
+    opacity: 0.4;
+  }
+  .section h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(32px, 5vw, 58px);
+    font-weight: 900;
+    line-height: 1.08;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+  .section h2 span { color: var(--orange); }
+  .section-intro {
+    font-size: 15px;
+    color: #aaa;
+    font-weight: 300;
+    max-width: 680px;
+    margin-bottom: 48px;
+    line-height: 1.7;
+  }
+
+  /* CARDS */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 3px; }
+  .card {
+    background: var(--card);
+    padding: 32px 28px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px solid var(--border);
+  }
+  .card-eyebrow {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--orange);
+  }
+  .card h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1.2;
+  }
+  .card p {
+    font-size: 13px;
+    color: #999;
+    line-height: 1.65;
+    font-weight: 300;
+    flex: 1;
+  }
+  .card-tag {
+    display: inline-block;
+    margin-top: 12px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--orange);
+    background: rgba(255,65,20,0.10);
+    padding: 5px 10px;
+    align-self: flex-start;
+  }
+  .card-price {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid #2a2a2a;
+  }
+  .card-price .amount {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--orange);
+  }
+  .card-price .detail { font-size: 11px; color: #555; margin-top: 2px; }
+
+  /* BULLET LIST */
+  .mod-bullets { display: flex; flex-direction: column; gap: 7px; margin-top: 16px; }
+  .mod-bullet { font-size: 11px; color: #666; display: flex; gap: 8px; }
+  .mod-bullet span { color: var(--orange); font-weight: 700; flex-shrink: 0; }
+  .mod-bullet.highlight-bullet { color: #999; }
+  .mod-bullet.highlight-bullet span { color: var(--orange); }
+
+  /* BEFORE/AFTER */
+  .transform-grid { display: flex; flex-direction: column; gap: 3px; max-width: 860px; }
+  .transform-row { display: grid; grid-template-columns: 1fr 48px 1fr; align-items: center; background: var(--bg3); }
+  .transform-before { padding: 18px 24px; font-size: 13px; color: #555; text-decoration: line-through; font-weight: 300; }
+  .transform-arrow { display: flex; align-items: center; justify-content: center; background: var(--orange); height: 100%; font-size: 12px; color: white; font-weight: 800; }
+  .transform-after { padding: 18px 24px; font-size: 13px; color: var(--text); font-weight: 400; }
+
+  /* CALLOUT */
+  .callout {
+    border-left: 3px solid var(--orange);
+    padding: 20px 28px;
+    background: rgba(255,65,20,0.04);
+    font-size: 14px;
+    color: #aaa;
+    line-height: 1.7;
+    font-weight: 300;
+    max-width: 780px;
+  }
+  .callout strong { color: var(--white); font-weight: 600; }
+
+  /* CALLOUT INFO (neutro) */
+  .callout-info {
+    border-left: 3px solid #333;
+    padding: 18px 24px;
+    background: rgba(255,255,255,0.02);
+    font-size: 13px;
+    color: #666;
+    line-height: 1.65;
+    font-weight: 300;
+    max-width: 780px;
+    margin-top: 12px;
+  }
+  .callout-info strong { color: #999; font-weight: 600; }
+
+  /* PRICING TABLE */
+  .pricing-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+  .pricing-table th {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--orange);
+    text-align: left;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg3);
+  }
+  .pricing-table td {
+    padding: 20px 20px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    background: var(--card);
+  }
+  .pricing-table tr:hover td { background: #1f1f1f; }
+  .mod-name { font-family: 'Montserrat', sans-serif; font-weight: 700; color: var(--white); font-size: 13px; }
+  .mod-desc { color: #666; font-size: 12px; margin-top: 4px; line-height: 1.5; }
+  .price-val { font-family: 'Montserrat', sans-serif; font-weight: 800; color: var(--white); font-size: 15px; white-space: nowrap; }
+  .tier-tag {
+    display: inline-block;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    background: rgba(255,65,20,0.12);
+    color: var(--orange);
+    border: 1px solid rgba(255,65,20,0.25);
+  }
+  .pricing-table .total-row td {
+    background: rgba(255,65,20,0.07);
+    border-top: 1px solid rgba(255,65,20,0.3);
+    border-bottom: none;
+  }
+  .discount-note { font-size: 11px; color: #555; margin-top: 4px; }
+
+  /* TIMELINE */
+  .timeline { display: flex; flex-direction: column; gap: 3px; }
+  .sprint-row {
+    display: grid;
+    grid-template-columns: 120px 160px 1fr 40px;
+    align-items: stretch;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .sprint-num {
+    background: var(--orange);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    color: white;
+    padding: 20px 16px;
+    letter-spacing: 0.05em;
+  }
+  .sprint-weeks { padding: 20px; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid var(--border); }
+  .sprint-weeks .wk { font-family: 'Montserrat', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 0.1em; color: #555; text-transform: uppercase; }
+  .sprint-weeks .wk-val { font-size: 13px; color: #888; margin-top: 2px; }
+  .sprint-content { padding: 20px 24px; font-size: 13px; color: var(--text); display: flex; align-items: center; }
+  .sprint-faixa {
+    display: flex; align-items: center; justify-content: center;
+    border-left: 1px solid var(--border);
+    padding: 0 12px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px;
+    font-weight: 800;
+    color: var(--orange);
+    letter-spacing: 0.1em;
+    writing-mode: vertical-rl;
+  }
+
+  /* KPI */
+  .kpi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 3px; }
+  .kpi-card { background: var(--card); border: 1px solid var(--border); padding: 32px 28px; }
+  .kpi-num { font-family: 'Montserrat', sans-serif; font-size: 48px; font-weight: 900; color: var(--orange); line-height: 1; margin-bottom: 8px; }
+  .kpi-label { font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; color: var(--white); margin-bottom: 6px; }
+  .kpi-source { font-size: 11px; color: #555; line-height: 1.5; }
+
+  /* STEPS */
+  .steps-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px; max-width: 900px; }
+  .step-card { background: var(--card); border: 1px solid var(--border); padding: 36px 28px; }
+  .step-num { font-family: 'Montserrat', sans-serif; font-size: 36px; font-weight: 900; color: var(--orange); margin-bottom: 14px; line-height: 1; }
+  .step-title { font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 800; color: var(--white); margin-bottom: 10px; }
+  .step-desc { font-size: 13px; color: #777; line-height: 1.65; }
+  .step-time { margin-top: 20px; font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; color: var(--orange); letter-spacing: 0.05em; }
+
+  /* FOOTER */
+  .footer {
+    padding: 60px 64px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .footer-quote { font-size: 13px; color: #444; font-style: italic; max-width: 420px; line-height: 1.7; }
+  .footer-brand { text-align: right; }
+  .footer-brand .brand-name { font-family: 'Montserrat', sans-serif; font-size: 22px; font-weight: 900; color: var(--white); }
+  .footer-brand .brand-url { font-size: 11px; color: var(--orange); margin-top: 4px; }
+
+  .page-break { border-top: 1px solid var(--border); margin: 0; }
+
+  /* SPECIAL: trigger highlight */
+  .trigger-highlight {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,65,20,0.08);
+    border: 1px solid rgba(255,65,20,0.2);
+    padding: 3px 10px;
+    font-size: 10px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin-top: 8px;
+  }
+
+  @media (max-width: 768px) {
+    .section { padding: 60px 28px; }
+    .grid-2, .grid-4, .steps-grid, .kpi-grid { grid-template-columns: 1fr; }
+    .grid-3 { grid-template-columns: 1fr; }
+    .footer { flex-direction: column; gap: 24px; }
+    .sprint-row { grid-template-columns: 80px 1fr; }
+    .sprint-weeks, .sprint-faixa { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-label">AM Hub · Proposta Essencial · 4 Módulos</div>
+  <h1>O AM tem tudo.<br/><span>Começando pelo<br/>que importa.</span></h1>
+  <p class="cover-sub">Base de dados viva, equipe conectada e e-mails organizados — o alicerce operacional do escritório, num único ponto de partida.</p>
+
+  <div class="cover-modules">
+    <div class="cover-mod-chip active">🗂️ Cadastro 360°</div>
+    <div class="cover-mod-chip active">📂 Biblioteca de Clientes</div>
+    <div class="cover-mod-chip active">⚖️ Equipe Cível Saúde</div>
+    <div class="cover-mod-chip active">✉️ E-mails da Equipe</div>
+  </div>
+
+  <div class="cover-badge">Klit · Power Platform · Julho 2026</div>
+  <div class="cover-meta">
+    <span>Andrade Maia Advogados</span>
+    <span>Proposta Enxuta · 4 Módulos</span>
+    <span>klit.com.br</span>
+  </div>
+</div>
+
+<!-- 01 · TRANSFORMAÇÃO -->
+<section class="section">
+  <div class="section-label">01 · A escolha certa</div>
+  <h2>Quatro módulos.<br/><span>Um escritório diferente.</span></h2>
+  <p class="section-intro">
+    O setlist completo tem quatro faixas. Esta proposta entrega o alicerce operacional — base limpa, equipe conectada, e-mails organizados e dados de peritos convertidos automaticamente. Tudo o que vem depois — compliance, IA, intranet — cresce sobre isso.
+  </p>
+
+  <div class="transform-grid">
+    <div class="transform-row">
+      <div class="transform-before">Clientes, sócios e parceiros em planilhas espalhadas sem padrão</div>
+      <div class="transform-arrow">▶</div>
+      <div class="transform-after">Cadastro 360° validado, deduplicado e relacionado — uma base única pronta para qualquer módulo futuro</div>
+    </div>
+    <div class="transform-row">
+      <div class="transform-before">Dados de peritos chegam via Excel sem fluxo definido — alguém precisa copiar manualmente</div>
+      <div class="transform-arrow">▶</div>
+      <div class="transform-after">Biblioteca de Clientes recebe o Excel do perito, valida, converte e registra automaticamente via trigger Power Automate</div>
+    </div>
+    <div class="transform-row">
+      <div class="transform-before">Cada colaborador da Cível mantém sua lista paralela — status e histórico fragmentados</div>
+      <div class="transform-arrow">▶</div>
+      <div class="transform-after">Lista da equipe sincronizada com o Cadastro 360° — cada um vê só o seu, com OS distribuídas automaticamente</div>
+    </div>
+    <div class="transform-row">
+      <div class="transform-before">E-mails de clientes e casos misturados na caixa de entrada de cada advogado</div>
+      <div class="transform-arrow">▶</div>
+      <div class="transform-after">E-mails coletados, classificados e organizados por identificador único — cliente, colaborador, conteúdo e horário separados</div>
+    </div>
+  </div>
+</section>
+
+<div class="page-break"></div>
+
+<!-- 02 · OS MÓDULOS -->
+<section class="section">
+  <div class="section-label">02 · O que está incluído</div>
+  <h2>Quatro módulos.<br/><span>Um propósito.</span></h2>
+  <p class="section-intro">
+    Implantação sobre o Microsoft 365 que o AM já licencia. Configuração completa, treinamento e 30 dias de suporte pós-ativação inclusos em todos os módulos.
+  </p>
+
+  <!-- Módulos 1 e 2 -->
+  <div class="grid-2" style="margin-bottom: 3px;">
+
+    <div class="card">
+      <div class="card-eyebrow">🗂️ Módulo 1 · Base de Conhecimento</div>
+      <h3>Cadastro 360°</h3>
+      <p>
+        Clientes, colaboradores, sócios e parceiros numa base única e relacionada. Cada registro validado, deduplicado e classificado com metadados gerenciados — pronto para pesquisa, automação e todos os módulos que vêm depois. Não tem trigger de Excel: os dados chegam pelo Cadastro ou por entrada direta.
+      </p>
+      <div class="mod-bullets">
+        <div class="mod-bullet"><span>▸</span>Listas mestre + validação + deduplicação</div>
+        <div class="mod-bullet"><span>▸</span>Managed Metadata para busca unificada futura</div>
+        <div class="mod-bullet"><span>▸</span>Entrada via formulário SharePoint ou manualmente</div>
+        <div class="mod-bullet"><span>▸</span>Base de origem para todos os módulos da equipe</div>
+      </div>
+      <div class="card-tag">Essencial</div>
+      <div class="card-price">
+        <div class="amount">R$ 6.600</div>
+        <div class="detail">implantação · one-time</div>
+      </div>
+    </div>
+
+    <div class="card" style="border-color: rgba(255,65,20,0.25); background: rgba(255,65,20,0.03);">
+      <div class="card-eyebrow">📂 Módulo 2 · Ingestão de Dados Externos</div>
+      <h3>Biblioteca de Clientes</h3>
+      <p>
+        Esta é a biblioteca que recebe e converte os dados dos peritos. O perito envia a planilha Excel para uma pasta monitorada no OneDrive — o trigger Power Automate detecta o arquivo, valida os campos, deduplica, enriquece com dados complementares e registra automaticamente na List estruturada, com Adaptive Card de confirmação no Teams.
+      </p>
+      <div class="mod-bullets">
+        <div class="mod-bullet highlight-bullet"><span>▸</span><span style="color:var(--orange); background:rgba(255,65,20,0.1); padding: 1px 6px; font-size:10px; font-weight:700; letter-spacing:0.08em;">TRIGGER EXCEL</span>&nbsp;OneDrive pasta monitorada → Power Automate</div>
+        <div class="mod-bullet"><span>▸</span>Validação de formatos (CNPJ, e-mail, CEP) + deduplicação</div>
+        <div class="mod-bullet"><span>▸</span>Enriquecimento automático (UF por CEP, responsável por e-mail)</div>
+        <div class="mod-bullet"><span>▸</span>Adaptive Card de confirmação no Teams ao responsável</div>
+        <div class="mod-bullet"><span>▸</span>List de auditoria com log de cada importação</div>
+      </div>
+      <div class="card-tag">Profissional</div>
+      <div class="card-price">
+        <div class="amount">R$ 5.200</div>
+        <div class="detail">implantação · one-time</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Módulos 3 e 4 -->
+  <div class="grid-2" style="margin-bottom: 3px;">
+
+    <div class="card">
+      <div class="card-eyebrow">⚖️ Módulo 3 · Plataforma da Equipe</div>
+      <h3>Equipe Cível Saúde</h3>
+      <p>
+        Lista customizada da equipe sincronizada automaticamente com o Cadastro 360° e a Biblioteca de Clientes. Cada colaborador vê apenas seus registros, com status, histórico e pendências consolidados. Power Automate distribui OS automaticamente e dispara notificações em tempo real.
+      </p>
+      <div class="mod-bullets">
+        <div class="mod-bullet"><span>▸</span>Lista BATMAN sincronizada via Power Automate (Approvals)</div>
+        <div class="mod-bullet"><span>▸</span>Views filtradas por colaborador — cada um vê o seu</div>
+        <div class="mod-bullet"><span>▸</span>Distribuição automática de tarefas + notificações Teams</div>
+        <div class="mod-bullet"><span>▸</span>Histórico e pendências consolidados por caso</div>
+      </div>
+      <div class="card-tag">Profissional</div>
+      <div class="card-price">
+        <div class="amount">R$ 3.800</div>
+        <div class="detail">implantação · one-time</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-eyebrow">✉️ Módulo 4 · Comunicação Organizada</div>
+      <h3>E-mails da Equipe</h3>
+      <p>
+        Coleta, classifica e organiza os e-mails da equipe por identificador único — separando dados do cliente, colaborador, conteúdo e horários. Cada e-mail vira um registro estruturado na List, com Adaptive Card no Teams para ação imediata. Fim das caixas de entrada como arquivo morto.
+      </p>
+      <div class="mod-bullets">
+        <div class="mod-bullet"><span>▸</span>Power Automate captura e-mails do Outlook da equipe</div>
+        <div class="mod-bullet"><span>▸</span>Classificação automática por cliente / caso / responsável</div>
+        <div class="mod-bullet"><span>▸</span>Adaptive Cards no Teams para resposta ou ação imediata</div>
+        <div class="mod-bullet"><span>▸</span>Histórico de comunicações vinculado ao Cadastro 360°</div>
+      </div>
+      <div class="card-tag">Profissional</div>
+      <div class="card-price">
+        <div class="amount">R$ 3.800</div>
+        <div class="detail">implantação · one-time</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Tier base -->
+  <div class="card" style="border-color: rgba(255,255,255,0.08); background: rgba(255,255,255,0.02);">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:24px; flex-wrap:wrap;">
+      <div>
+        <div class="card-eyebrow">⭐ Tier base · Essencial — incluso</div>
+        <h3 style="font-size:14px; margin-top:8px;">Microsoft Lists + SharePoint Sites + Power Automate (Sync de Listas)</h3>
+        <p style="margin-top:8px; max-width:640px; font-size:12px; color:#555;">
+          Site de Equipe conectado ao M365 Group, biblioteca de documentos, Sincronização de Listas via Power Automate, treinamento completo da equipe e documentação operacional. Incluído na implantação dos módulos — sem custo adicional.
+        </p>
+      </div>
+      <div style="min-width:120px; text-align:right; flex-shrink:0;">
+        <div style="font-family:'Montserrat',sans-serif; font-size:12px; color:#444; text-decoration:line-through; margin-bottom:4px;">R$ 3.800</div>
+        <div style="font-family:'Montserrat',sans-serif; font-size:14px; font-weight:800; color:#555;">incluso</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout" style="margin-top: 32px;">
+    Os quatro módulos formam uma cadeia: o <strong>Cadastro 360°</strong> é a base de dados limpa → a <strong>Biblioteca de Clientes</strong> ingere os dados dos peritos via Excel → a <strong>Equipe Cível</strong> consome esses registros com views filtradas → os <strong>E-mails</strong> fecham o ciclo vinculando comunicações ao cadastro. Nenhum dado fica solto.
+  </div>
+</section>
+
+<div class="page-break"></div>
+
+<!-- 03 · INVESTIMENTO -->
+<section class="section">
+  <div class="section-label">03 · Investimento</div>
+  <h2>O Setlist<br/><span>de Preços.</span></h2>
+  <p class="section-intro">
+    Implantação one-time. Sem mensalidade fixa. Suporte reativo via banco de horas quando precisar de evoluções.
+  </p>
+
+  <table class="pricing-table">
+    <thead>
+      <tr>
+        <th>Módulo</th>
+        <th>Tecnologia principal</th>
+        <th>Tier</th>
+        <th style="text-align:right;">Implantação</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div class="mod-name">Cadastro 360°</div>
+          <div class="mod-desc">Base mestre de clientes, sócios e parceiros — validada e deduplicada. Entrada manual ou via formulário.</div>
+        </td>
+        <td style="color:#555; font-size:12px;">Lists mestre + validação + Managed Metadata</td>
+        <td><span class="tier-tag">Essencial</span></td>
+        <td style="text-align:right;"><span class="price-val">R$ 6.600</span></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="mod-name">Biblioteca de Clientes</div>
+          <div class="mod-desc">Recebe e converte dados dos peritos via Excel. Trigger automático ao detectar arquivo na pasta OneDrive.</div>
+        </td>
+        <td style="color:#555; font-size:12px; line-height:1.5;">
+          OneDrive trigger → Power Automate → validação → List<br/>
+          <span style="color:rgba(255,65,20,0.7); font-size:10px; font-weight:600;">▸ Trigger Excel aqui</span>
+        </td>
+        <td><span class="tier-tag">Profissional</span></td>
+        <td style="text-align:right;"><span class="price-val">R$ 5.200</span></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="mod-name">Equipe Cível Saúde</div>
+          <div class="mod-desc">Plataforma da equipe sincronizada com o Cadastro 360° e a Biblioteca de Clientes.</div>
+        </td>
+        <td style="color:#555; font-size:12px;">Lista BATMAN + PA (Approvals + notificações + distribuição de OS)</td>
+        <td><span class="tier-tag">Profissional</span></td>
+        <td style="text-align:right;"><span class="price-val">R$ 3.800</span></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="mod-name">E-mails da Equipe</div>
+          <div class="mod-desc">Captura, classifica e organiza e-mails por caso e responsável — vinculados ao Cadastro 360°.</div>
+        </td>
+        <td style="color:#555; font-size:12px;">Power Automate (e-mails Outlook) + Lists + Adaptive Cards</td>
+        <td><span class="tier-tag">Profissional</span></td>
+        <td style="text-align:right;"><span class="price-val">R$ 3.800</span></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="mod-name" style="color:#444;">Tier base Essencial</div>
+          <div class="mod-desc" style="color:#3a3a3a;">Team Site + M365 Group + biblioteca de docs + Sync de Listas + treinamento + 30 dias suporte</div>
+        </td>
+        <td style="color:#333; font-size:12px;">Incluído na implantação dos módulos</td>
+        <td><span class="tier-tag" style="opacity:0.35;">Incluso</span></td>
+        <td style="text-align:right;"><span class="price-val" style="color:#3a3a3a;">incluso</span></td>
+      </tr>
+      <tr class="total-row">
+        <td colspan="2">
+          <div class="mod-name" style="color:var(--orange);">Total · 4 módulos · implantação + treinamento + 30 dias suporte</div>
+          <div class="discount-note">Valor de lista: R$ 19.400 · desconto de volume aplicado</div>
+        </td>
+        <td></td>
+        <td style="text-align:right; vertical-align:middle;">
+          <span class="price-val" style="font-size:26px; color:var(--orange);">R$ 18.200</span>
+          <div class="discount-note" style="color:#555; margin-top:4px;">one-time</div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Banco de horas -->
+  <div style="margin-top: 40px;">
+    <div style="font-family:'Montserrat',sans-serif; font-size:10px; font-weight:700; letter-spacing:0.2em; color:#444; text-transform:uppercase; margin-bottom:16px;">Suporte após entrega — Banco de Horas (sem mensalidade fixa)</div>
+    <div class="grid-3" style="max-width:720px;">
+      <div class="card" style="padding:24px;">
+        <div class="card-eyebrow">🟢 Starter</div>
+        <div style="font-family:'Montserrat',sans-serif; font-size:18px; font-weight:800; color:var(--white); margin:8px 0;">R$ 1.500</div>
+        <div style="font-size:12px; color:#555;">5 horas · R$ 300/h · 30 dias</div>
+      </div>
+      <div class="card" style="padding:24px; border-color:rgba(255,65,20,0.3);">
+        <div class="card-eyebrow">🔵 Plus &nbsp;<span style="font-size:8px; background:rgba(255,65,20,0.15); color:var(--orange); padding:2px 6px; font-weight:700; letter-spacing:0.1em;">RECOMENDADO</span></div>
+        <div style="font-family:'Montserrat',sans-serif; font-size:18px; font-weight:800; color:var(--white); margin:8px 0;">R$ 2.500</div>
+        <div style="font-size:12px; color:#555;">10 horas · R$ 250/h · 90 dias</div>
+      </div>
+      <div class="card" style="padding:24px;">
+        <div class="card-eyebrow">🟣 Pro</div>
+        <div style="font-family:'Montserrat',sans-serif; font-size:18px; font-weight:800; color:var(--white); margin:8px 0;">R$ 4.500</div>
+        <div style="font-size:12px; color:#555;">20 horas · R$ 225/h · 120 dias</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="page-break"></div>
+
+<!-- 04 · CRONOGRAMA -->
+<section class="section">
+  <div class="section-label">04 · Cronograma</div>
+  <h2>O Setlist do Show —<br/><span>6 semanas.</span></h2>
+  <p class="section-intro">
+    Entrega em três sprints sequenciais. O Cadastro 360° vai ao ar primeiro — todos os outros módulos dependem dele.
+  </p>
+
+  <div class="timeline">
+    <div class="sprint-row">
+      <div class="sprint-num">Sprint 1</div>
+      <div class="sprint-weeks">
+        <div class="wk">Semanas</div>
+        <div class="wk-val">1 – 2</div>
+      </div>
+      <div class="sprint-content">
+        <strong style="color:var(--white); margin-right:8px;">Cadastro 360°</strong> — importação dos dados legados, validação de campos, deduplicação, metadados gerenciados e treinamento da equipe
+      </div>
+      <div class="sprint-faixa">M1</div>
+    </div>
+    <div class="sprint-row">
+      <div class="sprint-num">Sprint 2</div>
+      <div class="sprint-weeks">
+        <div class="wk">Semanas</div>
+        <div class="wk-val">3 – 4</div>
+      </div>
+      <div class="sprint-content">
+        <strong style="color:var(--white); margin-right:8px;">Biblioteca de Clientes + E-mails</strong> — pasta OneDrive monitorada, trigger Excel do perito, pipeline de validação, Adaptive Cards e captura de e-mails da equipe classificados por caso
+      </div>
+      <div class="sprint-faixa">M2 · M4</div>
+    </div>
+    <div class="sprint-row">
+      <div class="sprint-num">Sprint 3</div>
+      <div class="sprint-weeks">
+        <div class="wk">Semanas</div>
+        <div class="wk-val">5 – 6</div>
+      </div>
+      <div class="sprint-content">
+        <strong style="color:var(--white); margin-right:8px;">Equipe Cível Saúde</strong> — lista BATMAN configurada, sincronização com Cadastro 360° e Biblioteca de Clientes, views por colaborador e fluxos de distribuição de OS
+      </div>
+      <div class="sprint-faixa">M3</div>
+    </div>
+  </div>
+
+  <div class="callout" style="margin-top: 32px;">
+    Em <strong>6 semanas</strong> o AM tem base de dados limpa, dados de peritos convertidos automaticamente, equipe com plataforma operacional e e-mails organizados. O passo seguinte — Jurídico & Compliance ou Claude AI — pode começar imediatamente.
+  </div>
+
+  <div style="margin-top: 48px;">
+    <div style="font-family:'Montserrat',sans-serif; font-size:10px; font-weight:700; letter-spacing:0.2em; color:#333; text-transform:uppercase; margin-bottom:16px;">Expansão natural — quando o AM quiser avançar</div>
+    <div class="grid-3" style="max-width:900px;">
+      <div class="card" style="padding:24px; opacity:0.55;">
+        <div class="card-eyebrow">⚖️ Faixa 3</div>
+        <h3 style="font-size:14px; margin-top:6px;">Jurídico & Compliance</h3>
+        <p style="font-size:12px; margin-top:6px; color:#555;">Gestão de contratos, KYC/KYP, Canal de Denúncias e LGPD</p>
+      </div>
+      <div class="card" style="padding:24px; opacity:0.55;">
+        <div class="card-eyebrow">🏢 Intranet</div>
+        <h3 style="font-size:14px; margin-top:6px;">AM Hub — Universo Amazing</h3>
+        <p style="font-size:12px; margin-top:6px; color:#555;">Hub Site branded + Universidade AM no Viva Learning + Viva Engage</p>
+      </div>
+      <div class="card" style="padding:24px; opacity:0.55;">
+        <div class="card-eyebrow">🤖 Faixa 4</div>
+        <h3 style="font-size:14px; margin-top:6px;">Claude AI — O Roadie Digital</h3>
+        <p style="font-size:12px; margin-top:6px; color:#555;">Índice AM + Conector MCP M365 + Skills por papel + Agente de Contratos</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="page-break"></div>
+
+<!-- 05 · RETORNO -->
+<section class="section">
+  <div class="section-label">05 · Retorno</div>
+  <h2>O que<br/><span>o show vale.</span></h2>
+  <p class="section-intro">Impacto imediato nos quatro módulos entregues.</p>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-num">100%</div>
+      <div class="kpi-label">Base de clientes confiável</div>
+      <div class="kpi-source">Zero duplicatas, CNPJ validado, segmento e responsável atribuídos — cada sócio entra numa reunião sabendo com quem está falando</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num">0 min</div>
+      <div class="kpi-label">Para converter dados do perito</div>
+      <div class="kpi-source">O Excel chega na pasta, o trigger dispara e o registro já está na List — sem alguém precisar copiar, colar ou validar manualmente</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num">−80%</div>
+      <div class="kpi-label">Menos coordenação manual</div>
+      <div class="kpi-source">McKinsey 2025: automação de distribuição de tarefas e captura de e-mails elimina entre 70–80% das trocas manuais de coordenação</div>
+    </div>
+  </div>
+</section>
+
+<div class="page-break"></div>
+
+<!-- 06 · PRÓXIMOS PASSOS -->
+<section class="section">
+  <div class="section-label">06 · Próximos passos</div>
+  <h2>Hora do<br/><span>Soundcheck.</span></h2>
+
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-num">01</div>
+      <div class="step-title">Soundcheck</div>
+      <div class="step-desc">Sessão de 60 minutos: mapeamento dos dados legados do Cadastro, formato atual dos arquivos Excel do perito e fluxo de e-mails da equipe Cível.</div>
+      <div class="step-time">7 dias</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">02</div>
+      <div class="step-title">Proposta Final</div>
+      <div class="step-desc">Escopo definitivo com nomenclaturas do AM, cronograma de sprints e contrato para assinatura.</div>
+      <div class="step-time">5 dias úteis</div>
+    </div>
+    <div class="step-card" style="border-color:rgba(255,65,20,0.4); background:rgba(255,65,20,0.03);">
+      <div class="step-num">03</div>
+      <div class="step-title">Kickoff</div>
+      <div class="step-desc">Sprint 1 começando — Cadastro 360° ao ar em 2 semanas. A Biblioteca de Clientes e os E-mails entram em seguida.</div>
+      <div class="step-time" style="color:var(--orange);">Imediato após assinatura</div>
+    </div>
+  </div>
+
+  <div class="callout" style="margin-top: 40px;">
+    O próximo passo é simples — <strong>uma sessão de 60 minutos</strong> para mapear os dados do Cadastro, entender o formato dos arquivos do perito e ver como a equipe Cível organiza o trabalho hoje. A partir daí, a Klit entrega o resto.
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-quote">
+    "No nosso repertório, o melhor álbum<br/>é sempre o próximo."<br/>
+    <span style="font-size:11px; color:#333; margin-top:8px; display:block;">Andrade Maia · 30 anos</span>
+  </div>
+  <div class="footer-brand">
+    <div class="brand-name">klit</div>
+    <div class="brand-url">klit.com.br</div>
+  </div>
+</footer>
+
+</body>
+</html>
